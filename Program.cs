@@ -11,8 +11,12 @@ class Program
     public static void Main(string[] args)
     {
 
-        string dir = @"C:\Users\tomislav.bjelcic\Desktop\ehkaze\structures";
-        string dataFile = Path.Join(dir, "inputpoints.txt");
+        //KDTreeBuilder.KDTreeBuildMain(args);
+
+
+        string dir = @"C:\Users\tomislav.bjelcic\Desktop\repos\ConsoleApp1\files";
+        string fileName = @"datapoints.txt";
+        string dataFile = Path.Join(dir, fileName);
 
 
         Linear2DInterpolator model = new(dir, dataFile);
@@ -30,7 +34,7 @@ class Program
             double z = testData[i, 2];
 
             double z_pred = model.Interpolate(x, y);
-            
+
             double diff = z - z_pred;
             errTotal += diff * diff;
         }
