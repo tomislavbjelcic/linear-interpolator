@@ -6,29 +6,60 @@ namespace ConsoleApp1
     public static class KDTreeBuilder
     {
 
-        public static void KDTreeBuildMain(string[] args)
+        public static void KDTreeBuildMain(string directory)
         {
+
+            
+            foreach (string d in Directory.GetDirectories(directory))
+            {
+
+
+                foreach (string dir in Directory.GetDirectories(d))
+                {
+                    string dirName = Path.GetFileName(dir)!;
+                    string fileName = Path.Join(dir, $"lut_{dirName}.txt");
+
+
+                    double[,] points = Loader.LoadData2D(fileName, Util.DoubleParser, Constants.DELIMITER);
+                    int[] omitted = Loader.LoadData1D(Path.Join(dir, "omitted.txt"), Util.IntParser, Constants.DELIMITER);
+
+                    // sagradi K-D stablo i spremi ga na disk
+                    // u redu je slati Nx3 matricu jer će kod gradnje se ignorirati treći stupac
+                    alglib.kdtree kdt = KDTreeBuild(points, omitted);
+                    string outfile = Path.Join(dir, "kdtree.bin");
+                    using (FileStream fs = File.OpenWrite(outfile))
+                    {
+                        alglib.kdtreeserialize(kdt, fs);
+                    }
+
+                    Console.WriteLine($"Done writing to {outfile}");
+                }
+
+
+            }
+
+
             // program.ext fileName dir
-            if (args.Length < 2)
-            {
-                Console.WriteLine("Expected 2 arguments: data file and directory.");
-                return;
-            }
-            string fileName = args[0];
-            string dir = args[1];
-            double[,] points = Loader.LoadData2D(fileName, Util.DoubleParser, Constants.DELIMITER);
-            int[] omitted = Loader.LoadData1D(Path.Join(dir, "omitted.txt"), Util.IntParser, Constants.DELIMITER);
+            //if (args.Length < 2)
+            //{
+            //    Console.WriteLine("Expected 2 arguments: data file and directory.");
+            //    return;
+            //}
+            //string fileName = args[0];
+            //string dir = args[1];
+            //double[,] points = Loader.LoadData2D(fileName, Util.DoubleParser, Constants.DELIMITER);
+            //int[] omitted = Loader.LoadData1D(Path.Join(dir, "omitted.txt"), Util.IntParser, Constants.DELIMITER);
 
-            // sagradi K-D stablo i spremi ga na disk
-            // u redu je slati Nx3 matricu jer će kod gradnje se ignorirati treći stupac
-            alglib.kdtree kdt = KDTreeBuild(points, omitted);
-            string outfile = Path.Join(dir, "kdtree.bin");
-            using (FileStream fs = File.OpenWrite(outfile))
-            {
-                alglib.kdtreeserialize(kdt, fs);
-            }
+            //// sagradi K-D stablo i spremi ga na disk
+            //// u redu je slati Nx3 matricu jer će kod gradnje se ignorirati treći stupac
+            //alglib.kdtree kdt = KDTreeBuild(points, omitted);
+            //string outfile = Path.Join(dir, "kdtree.bin");
+            //using (FileStream fs = File.OpenWrite(outfile))
+            //{
+            //    alglib.kdtreeserialize(kdt, fs);
+            //}
 
-            Console.WriteLine($"Done writing to {outfile}");
+            //Console.WriteLine($"Done writing to {outfile}");
 
         }
 

@@ -14,34 +14,37 @@ class Program
         //KDTreeBuilder.KDTreeBuildMain(args);
 
 
-        string dir = @"C:\Users\tomislav.bjelcic\Desktop\repos\ConsoleApp1\files";
-        string fileName = @"datapoints.txt";
-        string dataFile = Path.Join(dir, fileName);
+        //string dir = @"C:\Users\tomislav.bjelcic\Desktop\repos\ConsoleApp1\files";
+        //string fileName = @"datapoints.txt";
+        //string dataFile = Path.Join(dir, fileName);
 
 
-        Linear2DInterpolator model = new(dir, dataFile);
+        //Linear2DInterpolator model = new(dir, dataFile);
 
 
-        double[,] testData = Loader.LoadData2D(dataFile, Util.DoubleParser, Constants.DELIMITER);
-        int nTestData = testData.GetLength(0);
+        //double[,] testData = Loader.LoadData2D(dataFile, Util.DoubleParser, Constants.DELIMITER);
+        //int nTestData = testData.GetLength(0);
 
-        double errTotal = 0;
+        //double errTotal = 0;
 
-        for (int i = 0; i < nTestData; i++)
-        {
-            double x = testData[i, 0];
-            double y = testData[i, 1];
-            double z = testData[i, 2];
+        //for (int i = 0; i < nTestData; i++)
+        //{
+        //    double x = testData[i, 0];
+        //    double y = testData[i, 1];
+        //    double z = testData[i, 2];
 
-            double z_pred = model.Interpolate(x, y);
+        //    double z_pred = model.Interpolate(x, y);
 
-            double diff = z - z_pred;
-            errTotal += diff * diff;
-        }
+        //    double diff = z - z_pred;
+        //    errTotal += diff * diff;
+        //}
 
-        double errLog = Math.Log(errTotal);
-        Console.WriteLine($"Err = {errTotal}");
-        Console.WriteLine($"ErrLog = {errLog}");
+        //double errLog = Math.Log(errTotal);
+        //Console.WriteLine($"Err = {errTotal}");
+        //Console.WriteLine($"ErrLog = {errLog}");
+
+        string directory = @"C:\Users\tomislav.bjelcic\Desktop\ehkaze\rcca";
+        // KDTreeBuilder.KDTreeBuildMain(directory);
 
 
     }

@@ -22,7 +22,13 @@ namespace ConsoleApp1
             {
                 while (!sr.EndOfStream)
                 {
-                    string line = sr.ReadLine()!;
+                    string line = sr.ReadLine()!.Trim();
+                    if (line.Length == 0)
+                    {
+                        vts.Add(Array.Empty<int>());
+                        continue;
+                    }
+
                     string[] splitted = line.Split(delimiter);
                     int[] v = new int[splitted.Length];
                     for (int i=0; i<splitted.Length; i++)
