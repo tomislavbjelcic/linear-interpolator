@@ -11,40 +11,26 @@ class Program
     public static void Main(string[] args)
     {
 
-        //KDTreeBuilder.KDTreeBuildMain(args);
+        //string dir = @"C:\Users\tomislav.bjelcic\Desktop\ehkaze\oddata\normal";
+        //Interpolator2d interpolator = new Improved2DInterpolator(dir);
 
 
-        //string dir = @"C:\Users\tomislav.bjelcic\Desktop\repos\ConsoleApp1\files";
-        //string fileName = @"datapoints.txt";
-        //string dataFile = Path.Join(dir, fileName);
-
-
-        //Linear2DInterpolator model = new(dir, dataFile);
-
-
-        //double[,] testData = Loader.LoadData2D(dataFile, Util.DoubleParser, Constants.DELIMITER);
-        //int nTestData = testData.GetLength(0);
-
-        //double errTotal = 0;
-
-        //for (int i = 0; i < nTestData; i++)
+        //while (true)
         //{
-        //    double x = testData[i, 0];
-        //    double y = testData[i, 1];
-        //    double z = testData[i, 2];
+        //    string line = Console.ReadLine()!;
+        //    if (line.Trim().Length == 0) break;
 
-        //    double z_pred = model.Interpolate(x, y);
-
-        //    double diff = z - z_pred;
-        //    errTotal += diff * diff;
+        //    string[] splitted = line.Split();
+        //    double x = double.Parse(splitted[0], CultureInfo.InvariantCulture);
+        //    double y = double.Parse(splitted[1], CultureInfo.InvariantCulture);
+        //    Pq(interpolator, x, y);
         //}
 
-        //double errLog = Math.Log(errTotal);
-        //Console.WriteLine($"Err = {errTotal}");
-        //Console.WriteLine($"ErrLog = {errLog}");
+        // VerifyResults();
 
-        string directory = @"C:\Users\tomislav.bjelcic\Desktop\ehkaze\rcca";
-        // KDTreeBuilder.KDTreeBuildMain(directory);
+        Err(@"C:\Users\tomislav.bjelcic\Desktop\ehkaze\oddata\normal", 
+            @"C:\Users\tomislav.bjelcic\Desktop\rcca\RCCA_03\lut_1_5.txt");
+
 
 
     }
@@ -52,17 +38,17 @@ class Program
 
     private static void VerifyResults()
     {
-        string dir = @"C:\Users\tomislav.bjelcic\Desktop\ehkaze\structures";
-        string dataFile = Path.Join(dir, "inputpoints.txt");
-        string testFile = @"C:\Users\tomislav.bjelcic\Desktop\ehkaze\testset.txt";
+        string dir = @"C:\Users\tomislav.bjelcic\Desktop\ehkaze\oddata\ukosen";
+        string testFile = @"C:\Users\tomislav.bjelcic\Desktop\ehkaze\aeee.txt";
 
 
-        Linear2DInterpolator model = new(dir, dataFile);
+        Interpolator2d model = new Improved2DInterpolator(dir);
 
 
         double[,] testData = Loader.LoadData2D(testFile, Util.DoubleParser, Constants.DELIMITER);
         int nTestData = testData.GetLength(0);
         double[,] testDataExtraColumn = new double[nTestData, 3];
+        Console.WriteLine(nTestData);
 
         for (int i = 0; i < nTestData; i++)
         {
@@ -132,10 +118,42 @@ class Program
         Pq(itp, 0.5, 0.9); // should be close to 0.9
     }
 
-    private static void Pq(Linear2DInterpolator interpolator, double x, double y)
+    private static void Pq(Interpolator2d interpolator, double x, double y)
     {
         double z = interpolator.Interpolate(x, y);
         Console.WriteLine($"{x}\t{y}\t->\t{z}");
+    }
+
+
+    private static void Pq(Poly poly, double x, double y)
+    {
+        string tf = poly.Contains(x, y) ? "VVV" : "---";
+        Console.WriteLine($"{x}\t{y}\t->\t{tf}");
+    }
+
+
+
+    private static void Err(string dir, string dataFile)
+    {
+        double[,] testData = Loader.LoadData2D(dataFile, Util.DoubleParser, Constants.DELIMITER);
+
+        Interpolator2d model = new Improved2DInterpolator(dir);
+        int nTestData = testData.GetLength(0);
+        double errSum = 0.0;
+
+        for (int i = 0; i < nTestData; i++)
+        {
+            double x = testData[i, 0];
+            double y = testData[i, 1];
+            double z = testData[i, 2];
+
+            double z_calculated = model.Interpolate(x, y);
+            errSum += Math.Abs(z - z_calculated);
+
+        }
+
+        Console.WriteLine(errSum);
+
     }
 
 

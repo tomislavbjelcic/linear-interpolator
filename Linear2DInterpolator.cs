@@ -3,7 +3,7 @@
 
 namespace ConsoleApp1
 {
-    public class Linear2DInterpolator
+    public class Linear2DInterpolator : Interpolator2d
     {
 
         private const double EPS = 1e-8;

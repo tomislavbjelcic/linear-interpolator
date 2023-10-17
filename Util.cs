@@ -44,5 +44,31 @@ namespace ConsoleApp1
         }
 
 
+
+        public static (double, double) Rotate(double[,] st, double x, double y)
+        {
+            double tx = st[0, 0] * x + st[0, 1] * y;
+            double ty = st[1, 0] * x + st[1, 1] * y;
+            return (tx, ty);
+        }
+
+
+        public static void StAvg(double[,] q1, double[,] q2, double[,] r)
+        {
+            r[0, 0] = q1[0, 0] + q2[0, 0];
+            r[0, 1] = q1[0, 1] + q2[0, 1];
+            r[1, 0] = q1[1, 0] + q2[1, 0];
+            r[1, 1] = q1[1, 1] + q2[1, 1];
+
+            double n1 = Math.Sqrt(r[0, 0] * r[0, 0] + r[0, 1] * r[0, 1]);
+            double n2 = Math.Sqrt(r[1, 0] * r[1, 0] + r[1, 1] * r[1, 1]);
+
+            r[0, 0] /= n1;
+            r[0, 1] /= n1;
+            r[1, 0] /= n2;
+            r[1, 1] /= n2;
+        }
+
+
     }
 }
